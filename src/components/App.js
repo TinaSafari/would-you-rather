@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 
 
 class App extends Component {
+
     componentDidMount() {
         this.props.dispatch(handleInitialData())
     }
@@ -16,9 +17,11 @@ class App extends Component {
 
         return (
             <Router>
+
                 <div className="App">
                     <p>New Start...</p>
                 </div>
+
             </Router>
         )
     }
