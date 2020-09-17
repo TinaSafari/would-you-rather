@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import '../App.css';
 import {handleInitialData} from '../Actions/shared'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {connect} from "react-redux";
-
 
 
 class App extends Component {
@@ -13,13 +11,15 @@ class App extends Component {
     }
 
     render() {
-        // const {loggedIn} = this.props;
 
         return (
+
             <Router>
+
 
                 <div className="App">
                     <p>New Start...</p>
+
                 </div>
 
             </Router>
@@ -27,8 +27,10 @@ class App extends Component {
     }
 }
 
-const mapDispatchToProps = dispatch => ({
-    dispatch
-})
+function mapStateToProps({ loadingBar }) {
+    return {
+        loading: loadingBar > 0
+    }
+}
 
-export default connect(mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
