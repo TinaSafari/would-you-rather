@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {handleInitialData} from '../Actions/shared'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {connect} from "react-redux";
+import Dashboard from "./Dashboard";
 
 
 class App extends Component {
@@ -18,7 +19,9 @@ class App extends Component {
 
 
                 <div className="App">
-                    <p>New Start...</p>
+                    {this.props.loading === true
+                        ? null
+                        : <Dashboard />}
 
                 </div>
 
@@ -27,9 +30,9 @@ class App extends Component {
     }
 }
 
-function mapStateToProps({ loadingBar }) {
+function mapStateToProps({ authUser }) {
     return {
-        loading: loadingBar > 0
+        loading: authUser === null
     }
 }
 
