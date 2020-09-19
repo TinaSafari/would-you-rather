@@ -1,9 +1,14 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {formatQuestion} from "../Utils/_DATA";
 
-class Question extends Component{
+// question props = 1. "id" comes from parent component
+//2.3. "authUser" "question" which make by component from Store
+
+class Question extends Component {
     render() {
-        return(
+        console.log("Q Object "+ JSON.stringify(this.props))
+        return (
             <div className='question'>
 
             </div>
@@ -14,9 +19,9 @@ class Question extends Component{
 function mapStateToProps({authUser, users, questions}, {id}) {
     const question = questions[id]
 
-    return{
+    return {
         authUser,
-        questions
+        question: formatQuestion(question)
     }
 }
 
