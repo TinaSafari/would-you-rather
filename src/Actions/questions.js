@@ -1,3 +1,4 @@
+
 export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS'
 
 export function receiveQuestions(questions) {
@@ -6,3 +7,5 @@ export function receiveQuestions(questions) {
         questions
     }
 }
+
+
