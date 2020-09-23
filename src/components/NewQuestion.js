@@ -1,40 +1,86 @@
-import React, {Component} from "react";
-import {handleAddQuestion} from '../Actions/questions'
+// import React, {Component} from "react";
+// import {handleAddQuestion} from '../Actions/questions'
+//
+//
+// class NewQuestion extends Component {
+//     state = {
+//         text: '',
+//         optionOne: '',
+//         optionTwo: ''
+//     }
+//
+//     handleChange = (e) => {
+//         const text = e.target.value
+//
+//         this.setState(() => ({
+//             text
+//         }))
+//     }
+//     handleSubmit = (e) => {
+//         e.preventDefault()
+//         const {text, optionOne, optionTwo} = this.state
+//         const {dispatch} = this.props
+//
+//         dispatch(handleAddQuestion(optionOne, optionTwo))
+//
+//         // todo: add question to store
+//
+//         console.log('NnNew question:', {text, optionOne, optionTwo})
+//
+//         this.setState(() => ({
+//             text:''
+//         }))
+//     }
+//
+//
+//     render() {
+//         const {text, optionOne, optionTwo} = this.state
 
+
+import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {handleAddQuestion} from '../Actions/questions'
 
 class NewQuestion extends Component {
     state = {
-        text: '',
         optionOne: '',
-        optionTwo: ''
+        optionTwo: '',
+        toHome: false
     }
 
     handleChange = (e) => {
         const text = e.target.value
 
-        this.setState(() => ({
-            text
-        }))
+        this.setState(() => {
+            return text
+        })
     }
+
     handleSubmit = (e) => {
         e.preventDefault()
-        const {text, optionOne, optionTwo} = this.state
+
+        const {optionOne, optionTwo} = this.state
         const {dispatch} = this.props
 
         dispatch(handleAddQuestion(optionOne, optionTwo))
 
-        // todo: add question to store
-
-        console.log('NnNew question:', {text, optionOne, optionTwo})
-
-        this.setState(() => ({
-            text:''
-        }))
+        this.setState(() => {
+            return {
+                toHome: true
+            }
+        })
     }
 
-
     render() {
-        const {text, optionOne, optionTwo} = this.state
+        const {optionOne, optionTwo, toHome} = this.state
+        const {authUser, users} = this.props
+        console.log("New question authUser:" + authUser)
+        console.log("New question users:" + JSON.stringify(users))
+
+        if (toHome === true) {
+            return <Redirect to='/'/>
+        }
 
         return (
             <div>
@@ -45,20 +91,20 @@ class NewQuestion extends Component {
                     </span>
                     <textarea
                         className='form-control'
-                        placeholder='Enter option one text here...'
-                        value={optionOne.text}
+                        placeholder='Option one...'
+                        value={optionOne}
                         onChange={this.handleChange}
                     />
                     <br/>
                     <textarea
                         className='form-control'
-                        placeholder='Enter option two text here...'
-                        value={optionTwo.text}
+                        placeholder='Option two...'
+                        value={optionTwo}
                         onChange={this.handleChange}/>
                     <br/>
                     <button className='btn'
                             type='submit'
-                    disabled={text === ''}>
+                            disabled={optionOne === '' || optionTwo === ''}>
                         Submit
                     </button>
                 </form>
@@ -67,4 +113,11 @@ class NewQuestion extends Component {
     }
 }
 
-export default NewQuestion
+function mapStateToProps({authUser, users}) {
+    return {
+        authUser,
+        users,
+    };
+}
+
+export default connect(mapStateToProps)(NewQuestion)
