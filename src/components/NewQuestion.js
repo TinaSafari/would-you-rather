@@ -1,40 +1,93 @@
-import React, {Component} from "react";
-import {handleAddQuestion} from '../Actions/questions'
+// import React, {Component} from "react";
+// import {handleAddQuestion} from '../Actions/questions'
+//
+//
+// class NewQuestion extends Component {
+//     state = {
+//         text: '',
+//         optionOne: '',
+//         optionTwo: ''
+//     }
+//
+//     handleChange = (e) => {
+//         const text = e.target.value
+//
+//         this.setState(() => ({
+//             text
+//         }))
+//     }
+//     handleSubmit = (e) => {
+//         e.preventDefault()
+//         const {text, optionOne, optionTwo} = this.state
+//         const {dispatch} = this.props
+//
+//         dispatch(handleAddQuestion(optionOne, optionTwo))
+//
+//         // todo: add question to store
+//
+//         console.log('NnNew question:', {text, optionOne, optionTwo})
+//
+//         this.setState(() => ({
+//             text:''
+//         }))
+//     }
+//
+//
+//     render() {
+//         const {text, optionOne, optionTwo} = this.state
 
+
+import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {handleAddQuestion} from '../Actions/questions'
 
 class NewQuestion extends Component {
     state = {
-        text: '',
         optionOne: '',
-        optionTwo: ''
+        optionTwo: '',
+        toHome: false
     }
-
-    handleChange = (e) => {
-        const text = e.target.value
-
-        this.setState(() => ({
-            text
+    //something wrong here need to be able to fine ID
+    handleChangeOptionOne = (e) => {
+        const optionOne = e.target.value
+        this.setState(()=>({
+            optionOne
+        }))
+    }
+    handleChangeOptionTwo = (e) => {
+        const optionTwo = e.target.value
+        this.setState(()=>({
+            optionTwo
         }))
     }
     handleSubmit = (e) => {
         e.preventDefault()
-        const {text, optionOne, optionTwo} = this.state
+
+        const {optionOne, optionTwo} = this.state
         const {dispatch} = this.props
 
         dispatch(handleAddQuestion(optionOne, optionTwo))
 
-        // todo: add question to store
-
-        console.log('NnNew question:', {text, optionOne, optionTwo})
-
-        this.setState(() => ({
-            text:''
-        }))
+        this.setState(() => {
+            return {
+                toHome: true
+            }
+        })
     }
 
-
     render() {
-        const {text, optionOne, optionTwo} = this.state
+        const {optionOne, optionTwo, toHome} = this.state
+        // console.log("New question authUser:" + authUser)
+        // console.log("New question users:" + JSON.stringify(users))
+        console.log("New question1:" + optionOne)
+        console.log("New question2:" + optionTwo)
+        console.log("STATE IN RENDER" + JSON.stringify(this.state))
+
+
+        if (toHome === true) {
+            return <Redirect to='/'/>
+        }
 
         return (
             <div>
@@ -43,22 +96,24 @@ class NewQuestion extends Component {
                     <span>
                         Would You Rather...
                     </span>
-                    <textarea
+                    <input
                         className='form-control'
-                        placeholder='Enter option one text here...'
-                        value={optionOne.text}
-                        onChange={this.handleChange}
+                        placeholder='Option one...'
+                        value={optionOne}
+                        onChange={this.handleChangeOptionOne}
                     />
                     <br/>
-                    <textarea
+                    <input
+                        id='optionTwo'
                         className='form-control'
-                        placeholder='Enter option two text here...'
-                        value={optionTwo.text}
-                        onChange={this.handleChange}/>
+                        placeholder='Option two...'
+                        value={optionTwo}
+                        onChange={this.handleChangeOptionTwo}/>
                     <br/>
                     <button className='btn'
                             type='submit'
-                    disabled={text === ''}>
+                            // disabled={optionOne === '' || optionTwo === ''}
+                    >
                         Submit
                     </button>
                 </form>
@@ -67,4 +122,11 @@ class NewQuestion extends Component {
     }
 }
 
-export default NewQuestion
+function mapStateToProps({authUser, users}) {
+    return {
+        authUser,
+        users,
+    };
+}
+
+export default connect(mapStateToProps)(NewQuestion)
