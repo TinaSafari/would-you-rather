@@ -48,15 +48,19 @@ class NewQuestion extends Component {
         optionTwo: '',
         toHome: false
     }
-
-    handleChange = (e) => {
-        const text = e.target.value
-
-        this.setState(() => {
-            return text
-        })
+    //something wrong here need to be able to fine ID
+    handleChangeOptionOne = (e) => {
+        const optionOne = e.target.value
+        this.setState(()=>({
+            optionOne
+        }))
     }
-
+    handleChangeOptionTwo = (e) => {
+        const optionTwo = e.target.value
+        this.setState(()=>({
+            optionTwo
+        }))
+    }
     handleSubmit = (e) => {
         e.preventDefault()
 
@@ -74,9 +78,12 @@ class NewQuestion extends Component {
 
     render() {
         const {optionOne, optionTwo, toHome} = this.state
-        const {authUser, users} = this.props
-        console.log("New question authUser:" + authUser)
-        console.log("New question users:" + JSON.stringify(users))
+        // console.log("New question authUser:" + authUser)
+        // console.log("New question users:" + JSON.stringify(users))
+        console.log("New question1:" + optionOne)
+        console.log("New question2:" + optionTwo)
+        console.log("STATE IN RENDER" + JSON.stringify(this.state))
+
 
         if (toHome === true) {
             return <Redirect to='/'/>
@@ -89,22 +96,24 @@ class NewQuestion extends Component {
                     <span>
                         Would You Rather...
                     </span>
-                    <textarea
+                    <input
                         className='form-control'
                         placeholder='Option one...'
                         value={optionOne}
-                        onChange={this.handleChange}
+                        onChange={this.handleChangeOptionOne}
                     />
                     <br/>
-                    <textarea
+                    <input
+                        id='optionTwo'
                         className='form-control'
                         placeholder='Option two...'
                         value={optionTwo}
-                        onChange={this.handleChange}/>
+                        onChange={this.handleChangeOptionTwo}/>
                     <br/>
                     <button className='btn'
                             type='submit'
-                            disabled={optionOne === '' || optionTwo === ''}>
+                            // disabled={optionOne === '' || optionTwo === ''}
+                    >
                         Submit
                     </button>
                 </form>
